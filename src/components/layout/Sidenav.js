@@ -168,7 +168,7 @@ function Sidenav({ color }) {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        <Menu.Item key="1">
+        <Menu.Item key="3">
           <NavLink to="/dashboard">
             <span
               className="icon"
@@ -182,6 +182,32 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
+          <NavLink to="/tables">
+            <span
+              className="icon"
+              style={{
+                background: page === "tables" ? color : "",
+              }}
+            >
+              {tables}
+            </span>
+            <span className="label">Tables</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <NavLink to="/profiles">
+            <span
+              className="icon"
+              style={{
+                background: page === "profiles" ? color : "",
+              }}
+            >
+              {tables}
+            </span>
+            <span className="label">Profiles</span>
+          </NavLink>
+        </Menu.Item>
+        {/* <Menu.Item key="2">
           <NavLink to="/tables">
             <span
               className="icon"
@@ -247,7 +273,7 @@ function Sidenav({ color }) {
             <span className="icon">{signup}</span>
             <span className="label">Sign Up</span>
           </NavLink>
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
       <div className="aside-footer">
         <div
