@@ -163,12 +163,11 @@ function Sidenav({ color }) {
   return (
     <>
       <div className="brand">
-        <img src={logo} alt="" />
-        <span>Muse Dashboard</span>
+        <span>Guruvarul Dashboard</span>
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        <Menu.Item key="3">
+        {/* <Menu.Item key="3">
           <NavLink to="/dashboard">
             <span
               className="icon"
@@ -180,8 +179,8 @@ function Sidenav({ color }) {
             </span>
             <span className="label">Dashboard</span>
           </NavLink>
-        </Menu.Item>
-        <Menu.Item key="2">
+        </Menu.Item> */}
+        {/* <Menu.Item key="2">
           <NavLink to="/tables">
             <span
               className="icon"
@@ -193,7 +192,7 @@ function Sidenav({ color }) {
             </span>
             <span className="label">Tables</span>
           </NavLink>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="1">
           <NavLink to="/profiles">
             <span
@@ -285,10 +284,10 @@ function Sidenav({ color }) {
           <span className="icon" style={{ color }}>
             {dashboard}
           </span>
-          <h6>Need Help?</h6>
-          <p>Please check our docs</p>
+          <h6>Guruvarul</h6>
+          <p>Please check our profiles</p>
           <Button type="primary" className="ant-btn-sm ant-btn-block">
-            DOCUMENTATION
+            Get started
           </Button>
         </div>
       </div>
