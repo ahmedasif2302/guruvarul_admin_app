@@ -12,8 +12,10 @@ import {
 import React from "react";
 import { isValidElement } from "../../../utils/Constants";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
-export default function ProfileDetail({ location }) {
+export default function ProfileDetail({ }) {
+  let location = useLocation()
   let { state } = location;
   let data = isValidElement(state.data) ? state.data : null;
   if (!isValidElement(data)) {
@@ -31,7 +33,6 @@ export default function ProfileDetail({ location }) {
   };
 
   const renderSubscriptions = () => {
-    console.log(data?.subscriptions,"data");
     return (
       <Col span={24} md={8} className="mb-24">
         <Card
@@ -41,7 +42,7 @@ export default function ProfileDetail({ location }) {
           title={<h6 className="font-semibold m-0">Your Subscriptions</h6>}
           extra={
             <p className="card-header-date">
-              <span>23 - 30 March 2021</span>
+              <span></span>
             </p>
           }
         >

@@ -6,8 +6,10 @@ import moment from 'moment';
 import { UserOutlined } from '@ant-design/icons';
 import { debounce } from '../../utils/Helpers';
 import ProfileStatusModal from './Components/ProfileStatusModal';
+import { useHistory } from 'react-router-dom';
 
-export default function Profiles({ history }) {
+export default function Profiles(props) {
+    const history = useHistory();
     const [profiles, setProfiles] = useState([]);
     const [total, setTotal] = useState(0);
     const [, setIsLoading] = useState(false);
@@ -36,7 +38,6 @@ export default function Profiles({ history }) {
             setProfiles(profiles);
             setTotal(profileCount);
         } catch (error) {
-            console.log(error);
             setError('Something went wrong');
             setIsLoading(false)
         }

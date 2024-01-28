@@ -33,7 +33,7 @@ function App() {
         <Route path="/login" exact component={SignIn} />
         <Main>
           <ProtectedRoute exact path="/profiles" component={Profiles} />
-          <Route exact path="/profile/:id" component={ProfileDetail} />
+          <ProtectedRoute exact path="/profile/:id" component={ProfileDetail} />
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/billing" component={Billing} />

@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { isValidElement } from "../utils/Constants";
 import { Route, Redirect } from "react-router-dom";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  let users = localStorage.getItem("user");
+  const [users, setUsers] = useState(null);
+  useEffect(() => {
+    let userData = localStorage.getItem("users");
+    setUsers(userData);
+  }, []);
 
   return (
     <Route
       {...rest}
       render={() => {
-        return isValidElement(users?.id) ? (
+        return isValidElement(users) ? (
           <Component {...rest} />
         ) : (
           <Redirect to="/login" />

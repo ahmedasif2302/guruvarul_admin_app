@@ -117,11 +117,9 @@ const signin = [
 export default class SignUp extends Component {
   render() {
     const onFinish = (values) => {
-      console.log("Success:", values);
     };
 
     const onFinishFailed = (errorInfo) => {
-      console.log("Failed:", errorInfo);
     };
     return (
       <>
