@@ -23,15 +23,16 @@ import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import Profiles from "./pages/profiles/Profiles";
 import ProfileDetail from "./pages/profiles/Components/ProfileDetail";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <div className="App">
       <Switch>
         <Route path="/sign-up" exact component={SignUp} />
-        <Route path="/sign-in" exact component={SignIn} />
+        <Route path="/login" exact component={SignIn} />
         <Main>
-          <Route exact path="/profiles" component={Profiles} />
+          <ProtectedRoute exact path="/profiles" component={Profiles} />
           <Route exact path="/profile/:id" component={ProfileDetail} />
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/tables" component={Tables} />

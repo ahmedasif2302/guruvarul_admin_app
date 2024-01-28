@@ -45,12 +45,7 @@ export default function Profiles({ history }) {
     useEffect(() => {
         profileCall(page)
         // eslint-disable-next-line
-    }, [page]);
-
-    useEffect(() => {
-        profileCall(page)
-        // eslint-disable-next-line
-    }, [search, status])
+    }, [page, search, status]);
 
     const columns = [
         {
@@ -129,7 +124,7 @@ export default function Profiles({ history }) {
     }, [isModal]);
 
     const handleOk = useCallback(() => {
-        // eslint-disable-next-line
+       
     }, [])
 
     const renderProfileModal = () => {
@@ -173,7 +168,7 @@ export default function Profiles({ history }) {
                                         setStatus(e.target.value)
                                     }}
                                     value={status}
-                                    defaultValue="a"
+                                    defaultValue="APPROVED"
                                 >
                                     <Radio.Button value="APPROVED">Approved</Radio.Button>
                                     <Radio.Button value="EXPIRED">Expired</Radio.Button>
