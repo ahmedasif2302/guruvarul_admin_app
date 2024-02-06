@@ -47,6 +47,9 @@
   .card-profile-head {
     margin: -53px 24px 24px;
   }
+  .layout-dashboard .ant-segmented.ant-segmented-block {
+    display: none;
+  }
 }
 
 @media (min-width: 992px) {
@@ -75,10 +78,82 @@
   .layout-dashboard-rtl .ant-layout-footer {
     margin: 0 20px 20px 0;
   }
+  .layout-dashboard .pagination-block {
+    padding: 15px;
+    justify-content: center;
+    display: flex;
+  }
+  .layout-dashboard .profile-list {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
   .layout-dashboard.layout-dashboard-rtl .header-control {
     justify-content: flex-end;
   }
+  .layout-dashboard .header-control {
+    margin-top: 0;
+  }
+  .layout-dashboard .ant-card-head-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .layout-dashboard .ant-card-head {
+    padding: 0 20px;
+  }
+  .layout-dashboard .ant-page-header-heading,
+  .layout-dashboard .ant-card-extra .radio-btn {
+    display: none;
+  }
+  .layout-dashboard .ant-card-head-wrapper .ant-segmented-item-label {
+    padding: 0 7px;
+    font-size: 12px;
+  }
+  .layout-dashboard .ant-card-extra {
+    width:100%;
+    padding-top: 0;
+  }
+  .layout-dashboard .table-responsive > .input-group {
+    padding:15px!important;
+    width: 100%!important;
+  }
+  .layout-dashboard .pagination-block {
+      padding: 15px;
+      justify-content: center;
+      display: flex;
+  }
+  .layout-dashboard .ant-list-sm .ant-list-item {
+    text-align: left;
+  }
+  .layout-dashboard .ant-btn {
+    height: 30px;
+    line-height: 30px;
+  }
+  .layout-dashboard .profile-table {
+    display: none;
+  }
 }
+
+@media (max-width: 460px) {
+  .layout-dashboard .ant-layout-header {
+    padding: 15px;
+    margin:  0;
+  }
+  .layout-dashboard .ant-layout-content {
+      margin: 0 15px 0;
+  }
+  .layout-dashboard .ant-card-head {
+    padding: 0 15px;
+  }
+  .layout-dashboard .ant-card-head-wrapper .ant-segmented-item-label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 389px) {
+  .layout-dashboard .ant-card-head-wrapper .ant-segmented-item-label {
+    font-size: 9px;
+  }
+}
+

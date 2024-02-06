@@ -6,17 +6,22 @@ import {
   Descriptions,
   Image,
   List,
+  Modal,
   Row,
   Space,
+  notification,
 } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { isValidElement } from "../../../utils/Constants";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
+import { baseUrl } from "../../../api/api";
 
-export default function ProfileDetail({ }) {
-  let location = useLocation()
+export default function ProfileDetail({}) {
+  let location = useLocation();
   let { state } = location;
+  const [modalOpen, setModalOpen] = useState(false);
+  const [subscriptionId, setSubscriptionId] = useState(null);
   let data = isValidElement(state.data) ? state.data : null;
   if (!isValidElement(data)) {
     return <p>No data found</p>;
@@ -25,11 +30,47 @@ export default function ProfileDetail({ }) {
   const renderImages = (images) => {
     return images.map((image) => {
       return (
-        <Space direction="horizontal">
-          <Image width={200} height={250} src={image?.uri} />
-        </Space>
+        <Col xs={"auto"}>
+          <Image style={{ maxHeight: 200 }} src={image?.uri} />
+        </Col>
       );
     });
+  };
+
+  const onSuccess = () => {
+    notification.success({
+      message: `Success`,
+      description: "Profile status updated",
+      placement: "topRight",
+    });
+  };
+
+  const onError = (message) => {
+    notification.error({
+      message: `Something went wrong`,
+      description: message.toString(),
+      placement: "topRight",
+    });
+  };
+
+  const onUpateStatusApiHandler = async () => {
+    try {
+      let response = await baseUrl.put(
+        `approved/subscriptions/${data?.userId}/${subscriptionId}`,
+        {}
+      );
+      if (response.status === 200) {
+        setModalOpen(false);
+        setSubscriptionId(null);
+        onSuccess();
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+      onError(error?.message);
+      setSubscriptionId(null);
+      setModalOpen(false);
+    }
   };
 
   const renderSubscriptions = () => {
@@ -51,23 +92,58 @@ export default function ProfileDetail({ }) {
             className="transactions-list ant-newest"
             itemLayout="horizontal"
             dataSource={data?.subscriptions}
-            renderItem={(item) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    <Image width={100} height={100} src={item?.paymentScreenshot} />
-                  }
-                  title={item.name}
-                  description={moment(item.paymentDate).format('DD-MM-YYYY')}
-                />
-                <div className="amount">
-                  <span className={item.amountcolor}>{item.status ? "Approved" : "Pending"}</span>
-                </div>
-              </List.Item>
-            )}
+            renderItem={(item) => {
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Image
+                        width={100}
+                        height={100}
+                        src={item?.paymentScreenshot}
+                      />
+                    }
+                    title={item.name}
+                    description={moment(item.paymentDate).format("DD-MM-YYYY")}
+                  />
+                  <div className="amount">
+                    {item.status ? (
+                      <span className={item.amountcolor}>APPROVED</span>
+                    ) : (
+                      <div className="col-action">
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            setSubscriptionId(item?.id);
+                            setModalOpen(true);
+                          }}
+                        >
+                          Change Status
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </List.Item>
+              );
+            }}
           />
         </Card>
       </Col>
+    );
+  };
+
+  const renderModal = () => {
+    return (
+      <Modal
+        title="Status"
+        open={modalOpen}
+        onOk={onUpateStatusApiHandler}
+        onCancel={() => {
+          setModalOpen(false);
+        }}
+      >
+        <p>Are you sure do you want to change the status?</p>
+      </Modal>
     );
   };
 
@@ -80,8 +156,8 @@ export default function ProfileDetail({ }) {
           title={[<h6 className="font-semibold m-0">Profile Information</h6>]}
           bodyStyle={{ paddingTop: "0" }}
         >
+          <Row gutter={[16, 16]}>{renderImages(data?.profile_images)}</Row>
           <Row gutter={[24, 24]}>
-            {renderImages(data?.profile_images)}
             <Col span={24}>
               <Card className="card-billing-info" bordered="false">
                 <div className="col-info">
@@ -124,6 +200,7 @@ export default function ProfileDetail({ }) {
         </Card>
       </Col>
       {renderSubscriptions()}
+      {modalOpen ? renderModal() : null}
     </Row>
   );
 }
