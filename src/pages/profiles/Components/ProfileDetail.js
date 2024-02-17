@@ -191,9 +191,6 @@ export default function ProfileDetail({}) {
                     </Descriptions.Item>
                   </Descriptions>
                 </div>
-                <div className="col-action">
-                  <Button type="link">Change Status</Button>
-                </div>
               </Card>
             </Col>
           </Row>
