@@ -14,18 +14,13 @@ import {
   Table,
   Tag,
   Typography,
+  notification,
 } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { baseUrl } from "../../api/api";
 import { isValidString, profileStatus } from "../../utils/Constants";
 import moment from "moment";
-import {
-  AppstoreOutlined,
-  BarsOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { debounce } from "../../utils/Helpers";
 import ProfileStatusModal from "./Components/ProfileStatusModal";
 import { useHistory } from "react-router-dom";
@@ -41,7 +36,14 @@ export default function Profiles(props) {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("APPROVED");
   const [isModal, setIsModal] = useState(false);
-  const [selectStatus, setSelectStatus] = useState("APPROVED");
+  const [selectStatus, setSelectStatus] = useState(null);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    if(!isModal){
+      setProfile(null)
+    }
+  },[isModal])
 
   async function profileCall(paging) {
     try {
@@ -153,6 +155,7 @@ export default function Profiles(props) {
               <Typography.Link
                 onClick={() => {
                   setIsModal(true);
+                  setProfile(row);
                 }}
               >
                 Status
@@ -169,7 +172,48 @@ export default function Profiles(props) {
     // eslint-disable-next-line
   }, [isModal]);
 
-  const handleOk = useCallback(() => {}, []);
+  const onSuccess = () => {
+    notification.success({
+      message: `Success`,
+      description: "Profile status updated",
+      placement: "topRight",
+    });
+  };
+
+  const onError = (message) => {
+    notification.error({
+      message: `Something went wrong`,
+      description: message.toString(),
+      placement: "topRight",
+    });
+  };
+
+  const handleOk = async () => {
+    try {
+      let response  = await baseUrl.post(`/profile/individual/new/update/${profile?.userId}`, {
+        status: selectStatus
+      });
+
+      if(response?.status === 200){
+        onSuccess();
+        setStatus(selectStatus);
+        setSelectStatus(null);
+        setPage(1);
+        setIsModal(false)
+        return
+      } else {
+        onError("Please try again");
+        setIsModal(false)
+        setSelectStatus(null);
+        return;
+      }
+    } catch (error) {
+      console.log(error)
+      onError(error?.message)
+      setSelectStatus(null);
+      setIsModal(false)
+    }
+  };
 
   const renderProfileModal = () => {
     return (
@@ -187,10 +231,18 @@ export default function Profiles(props) {
             setSelectStatus(value);
           }}
         >
-          <Select.Option value="APPROVED">Approved</Select.Option>
-          <Select.Option value="PAYMENT_DONE">Payment done</Select.Option>
-          <Select.Option value="EXPIRED">Expired</Select.Option>
-          <Select.Option value="MARRIAGE_FIXED">Marriage fixed</Select.Option>
+          {status !== "APPROVED" && (
+            <Select.Option value="APPROVED">Approved</Select.Option>
+          )}
+          {status !== "PAYMENT_DONE" && (
+            <Select.Option value="PAYMENT_DONE">Payment done</Select.Option>
+          )}
+          {status !== "EXPIRED" && (
+            <Select.Option value="EXPIRED">Expired</Select.Option>
+          )}
+          {status !== "MARRIAGE_FIXED" && (
+            <Select.Option value="MARRIAGE_FIXED">Marriage fixed</Select.Option>
+          )}
         </Select>
       </ProfileStatusModal>
     );
@@ -225,12 +277,12 @@ export default function Profiles(props) {
                   value={status}
                   defaultValue="APPROVED"
                 >
-                  <Radio.Button value="APPROVED">Approved</Radio.Button>
-                  <Radio.Button value="EXPIRED">Expired</Radio.Button>
+                  <Radio.Button value="APPROVED">Approved {status === 'APPROVED' && (total || 0)}</Radio.Button>
+                  <Radio.Button value="EXPIRED">Expired {status === 'EXPIRED' && (total || 0)}</Radio.Button>
                   <Radio.Button value="MARRIAGE_FIXED">
-                    Marriage fixed
+                    Marriage fixed {status === 'MARRIAGE_FIXED' && (total || 0)}
                   </Radio.Button>
-                  <Radio.Button value="PAYMENT_DONE">Payment done</Radio.Button>
+                  <Radio.Button value="PAYMENT_DONE">Payment done {status === 'PAYMENT_DONE' && (total || 0)}</Radio.Button>
                 </Radio.Group>
 
                 <Segmented
@@ -326,6 +378,7 @@ export default function Profiles(props) {
                     <Button
                       onClick={() => {
                         setIsModal(true);
+                        setProfile(item);
                       }}
                       type="primary"
                       size="small"
