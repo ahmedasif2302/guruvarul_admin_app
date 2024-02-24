@@ -124,6 +124,21 @@ export default function Profiles(props) {
       },
     },
     {
+      title: "Profile expiry",
+      dataIndex: "profileExpiry",
+      width: "32%",
+      key: "age",
+      render: (text, row) => {
+        return (
+          <span>
+            {isValidString(row?.profileExpiry)
+              ? moment(row?.profileExpiry).format("DD-MM-YYYY")
+              : null}
+          </span>
+        );
+      },
+    },
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",
